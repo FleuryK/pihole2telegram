@@ -1,6 +1,5 @@
 import config
-from telegram.ext import CommandHandler
-from telegram.ext import Updater, CallbackQueryHandler
+from telegram.ext import CommandHandler, Updater, CallbackQueryHandler, Filters, MessageHandler
 from telegram import ChatAction
 from parse import genstats, top_it, check_status
 import time
@@ -16,42 +15,35 @@ updater = Updater(token=config.token)
 dispatcher = updater.dispatcher
 
 def start(bot, update):
-    bot.sendChatAction(chat_id=update.message.chat_id,
-                       action=ChatAction.TYPING)
-    bot.sendMessage(chat_id=update.message.chat_id, text="Hi, I'm pihole bot")
+    bot.send_message(chat_id=update.message.chat_id, text="Hi, I'm pihole bot")
     time.sleep(1)
 
     user = str(update.message.from_user.id)
     if user not in config.admin:
-        bot.sendChatAction(chat_id=update.message.chat_id,
-                           action=ChatAction.TYPING)
-
         time.sleep(1)
         userid = update.message.from_user.id
-        bot.sendMessage(chat_id=update.message.chat_id,
-                        text="You are id not in admin list. :(\n You id is " + str(userid))
+        bot.send_message(chat_id=update.message.chat_id,
+                        text="You are id not in admin list. :(\nYou id is " + str(userid))
     else:
-        bot.sendChatAction(chat_id=update.message.chat_id,
-                           action=ChatAction.TYPING)
         bot.send_sticker(chat_id=update.message.chat_id, sticker='CAADAgADBQADqWzzCr24QnCkXz6YAg')
         time.sleep(2)
-        bot.sendMessage(chat_id=update.message.chat_id,
+        bot.send_message(chat_id=update.message.chat_id,
                         text="You can use me - /help.")
 
 
 def help(bot, update):
-    bot.sendMessage(chat_id=update.message.chat_id, text="/id - user id \n/pihole - Menu")
+    bot.send_message(chat_id=update.message.chat_id, text="/id - user id\n/pihole - Menu")
 
 
 def myid(bot, update):
     userid = update.message.from_user.id
-    bot.sendMessage(chat_id=update.message.chat_id, text=userid)
+    bot.send_message(chat_id=update.message.chat_id, text=userid)
 
 
 def pihole(bot, update):
     user = str(update.message.from_user.id)
     if user in config.admin:
-        bot.sendMessage(chat_id=update.message.chat_id, text=genstats(), reply_markup=reply_markup, parse_mode='Markdown')
+        bot.send_message(chat_id=update.message.chat_id, text=genstats(), reply_markup=reply_markup, parse_mode='Markdown')
 
 
 def button(bot, update):
