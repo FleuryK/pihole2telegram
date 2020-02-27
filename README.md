@@ -54,12 +54,6 @@ run: pihole2telegram.py
 
 #### Bot tested:
 - Ubuntu 16.0.5
-
 - Pi-hole v3.3 & 4.0
-
 - AdminLTE v3.3 & 4.0
-
 - FTL v3.0 & 4.0
-
-### About Me
-This is my first bot written on python
